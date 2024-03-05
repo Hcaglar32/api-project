@@ -2,8 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 import SearchHeader from './searchHeader';
 import axios from 'axios';
+import { useState } from 'react';
+import ImageList from './ImageList';
 
 function App() {
+  const [images, setImages] = useState([]);
   const handleSubmit = async (term) => {
 
     const response = await axios.get('https://api.unsplash.com/search/photos', {
@@ -14,10 +17,14 @@ function App() {
         query: term,
       },
     });
-    debugger;
+    
+    setImages(response.data.results);
   }
   return (
-    <div className="App"><SearchHeader search={handleSubmit} /></div>
+    <div className="App">
+      <SearchHeader search={handleSubmit} />
+      <ImageList imagePlaceHolders={images}/>
+    </div>
   );
 }
 
